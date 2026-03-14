@@ -56,6 +56,7 @@ import { RemoveRestrictionsTool } from '@/components/tools/remove-restrictions';
 import { EncryptPDFTool } from '@/components/tools/encrypt';
 import { DecryptPDFTool } from '@/components/tools/decrypt';
 import { SanitizePDFTool } from '@/components/tools/sanitize';
+import { FindAndRedactTool } from '@/components/tools/find-and-redact';
 import { FlattenPDFTool } from '@/components/tools/flatten';
 import { RemoveMetadataTool } from '@/components/tools/remove-metadata';
 import { ChangePermissionsTool } from '@/components/tools/change-permissions';
@@ -74,7 +75,22 @@ import { RTFToPDFTool } from '@/components/tools/rtf-to-pdf';
 import { EPUBToPDFTool } from '@/components/tools/epub-to-pdf';
 import { MOBIToPDFTool } from '@/components/tools/mobi-to-pdf';
 import { FB2ToPDFTool } from '@/components/tools/fb2-to-pdf';
+import { DJVUToPDFTool } from '@/components/tools/djvu-to-pdf';
 import { PDFToSVGTool } from '@/components/tools/pdf-to-svg';
+import { PDFToMarkdownTool } from '@/components/tools/pdf-to-markdown';
+import { DeskewPDFTool } from '@/components/tools/deskew';
+import { PDFBookletTool } from '@/components/tools/pdf-booklet';
+import { RasterizePDFTool } from '@/components/tools/rasterize';
+import { MarkdownToPDFTool } from '@/components/tools/markdown-to-pdf';
+import { EmailToPDFTool } from '@/components/tools/email-to-pdf';
+import { CBZToPDFTool } from '@/components/tools/cbz-to-pdf';
+import { PDFToPDFATool } from '@/components/tools/pdf-to-pdfa';
+import { FontToOutlineTool } from '@/components/tools/font-to-outline';
+import { ExtractTablesTool } from '@/components/tools/extract-tables';
+import { OCGManagerTool } from '@/components/tools/ocg-manager';
+import { PDFReaderTool } from '@/components/tools/pdf-reader';
+import { DigitalSignPDFTool } from '@/components/tools/digital-sign';
+import { ValidateSignatureTool } from '@/components/tools/validate-signature';
 import { generateToolMetadata } from '@/lib/seo/metadata';
 import { JsonLd } from '@/components/seo/JsonLd';
 import {
@@ -86,7 +102,7 @@ import {
 } from '@/lib/seo/structured-data';
 import type { Metadata } from 'next';
 
-const SUPPORTED_LOCALES: Locale[] = ['en', 'ja', 'ko', 'es', 'fr', 'de', 'zh', 'pt'];
+const SUPPORTED_LOCALES: Locale[] = ['en', 'ja', 'ko', 'es', 'fr', 'de', 'zh', 'zh-TW', 'pt', 'ar', 'it'];
 
 interface ToolPageParams {
   params: Promise<{
@@ -328,6 +344,8 @@ export default async function ToolPageRoute({ params }: ToolPageParams) {
         return <PDFToPptxTool />;
       case 'pdf-to-excel':
         return <PDFToExcelTool />;
+      case 'pdf-to-markdown':
+        return <PDFToMarkdownTool />;
       case 'ocr-pdf':
         return <OCRPDFTool />;
       case 'linearize-pdf':
@@ -344,6 +362,8 @@ export default async function ToolPageRoute({ params }: ToolPageParams) {
         return <DecryptPDFTool />;
       case 'sanitize-pdf':
         return <SanitizePDFTool />;
+      case 'find-and-redact':
+        return <FindAndRedactTool />;
       case 'flatten-pdf':
         return <FlattenPDFTool />;
       case 'remove-metadata':
@@ -367,6 +387,35 @@ export default async function ToolPageRoute({ params }: ToolPageParams) {
         return <MOBIToPDFTool />;
       case 'fb2-to-pdf':
         return <FB2ToPDFTool />;
+      case 'djvu-to-pdf':
+        return <DJVUToPDFTool />;
+      // New tools
+      case 'deskew-pdf':
+        return <DeskewPDFTool />;
+      case 'pdf-booklet':
+        return <PDFBookletTool />;
+      case 'rasterize-pdf':
+        return <RasterizePDFTool />;
+      case 'markdown-to-pdf':
+        return <MarkdownToPDFTool />;
+      case 'email-to-pdf':
+        return <EmailToPDFTool />;
+      case 'cbz-to-pdf':
+        return <CBZToPDFTool />;
+      case 'pdf-to-pdfa':
+        return <PDFToPDFATool />;
+      case 'font-to-outline':
+        return <FontToOutlineTool />;
+      case 'extract-tables':
+        return <ExtractTablesTool />;
+      case 'ocg-manager':
+        return <OCGManagerTool />;
+      case 'pdf-reader':
+        return <PDFReaderTool />;
+      case 'digital-sign-pdf':
+        return <DigitalSignPDFTool />;
+      case 'validate-signature':
+        return <ValidateSignatureTool />;
       // Add more tool cases here as they are implemented
       default:
         return (

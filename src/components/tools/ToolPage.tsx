@@ -11,6 +11,9 @@ import { ToolProvider } from '@/lib/contexts/ToolContext';
 import { getToolIcon } from '@/config/icons';
 import Link from 'next/link';
 import { Home, ChevronRight } from 'lucide-react';
+import { FavoriteButton } from '@/components/ui/FavoriteButton';
+import { useMemo } from 'react';
+import { sanitizeHtml } from '@/lib/utils/html-sanitizer';
 
 export interface ToolPageProps {
   /** Tool data */
@@ -164,12 +167,15 @@ function ToolHeader({ tool, content }: ToolHeaderProps) {
         {content.title || toolName}
       </h1>
       <p
-        className="text-lg text-[hsl(var(--color-muted-foreground))] max-w-2xl mx-auto leading-relaxed"
+        className="text-lg text-[hsl(var(--color-muted-foreground))] max-w-2xl mx-auto leading-relaxed mb-4"
         data-testid="tool-page-subtitle"
         itemProp="description"
       >
         {content.metaDescription}
       </p>
+      <div className="flex items-center justify-center">
+        <FavoriteButton toolId={tool.id} size="lg" showLabel />
+      </div>
     </header>
   );
 }
@@ -183,6 +189,7 @@ interface DescriptionSectionProps {
 
 function DescriptionSection({ description }: DescriptionSectionProps) {
   const t = useTranslations();
+  const sanitizedDescription = useMemo(() => sanitizeHtml(description), [description]);
   if (!description) return null;
 
   return (
@@ -200,7 +207,7 @@ function DescriptionSection({ description }: DescriptionSectionProps) {
       <Card variant="outlined" size="lg" className="glass-card">
         <div
           className="prose prose-sm max-w-none text-[hsl(var(--color-foreground))/0.8]"
-          dangerouslySetInnerHTML={{ __html: description }}
+          dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
         />
       </Card>
     </section>

@@ -66,6 +66,7 @@ export { OCRPDFTool, type OCRPDFToolProps } from './ocr';
 export { PDFToPptxTool, type PDFToPptxToolProps } from './pdf-to-pptx';
 export { PDFToExcelTool, type PDFToExcelToolProps } from './pdf-to-excel';
 export { PDFToSVGTool, type PDFToSVGToolProps } from './pdf-to-svg';
+export { PDFToMarkdownTool, type PDFToMarkdownToolProps } from './pdf-to-markdown';
 
 // Optimize & Repair Tools
 export { CompressPDFTool, type CompressPDFToolProps } from './compress';
@@ -82,3 +83,22 @@ export { SanitizePDFTool, type SanitizePDFToolProps } from './sanitize';
 export { FlattenPDFTool, type FlattenPDFToolProps } from './flatten';
 export { RemoveMetadataTool, type RemoveMetadataToolProps } from './remove-metadata';
 export { ChangePermissionsTool, type ChangePermissionsToolProps } from './change-permissions';
+export { FindAndRedactTool, type FindAndRedactToolProps } from './find-and-redact';
+
+// New Tools - Phase 1
+export { DeskewPDFTool, type DeskewPDFToolProps } from './deskew';
+export { PDFBookletTool, type PDFBookletToolProps } from './pdf-booklet';
+export { RasterizePDFTool, type RasterizePDFToolProps } from './rasterize';
+
+// New Tools - Phase 2 (Conversion)
+export { MarkdownToPDFTool, type MarkdownToPDFToolProps } from './markdown-to-pdf';
+export { EmailToPDFTool, type EmailToPDFToolProps } from './email-to-pdf';
+export { CBZToPDFTool, type CBZToPDFToolProps } from './cbz-to-pdf';
+export { PDFToPDFATool, type PDFToPDFAToolProps } from './pdf-to-pdfa';
+
+// New Tools - Phase 3 (Advanced)
+export { FontToOutlineTool, type FontToOutlineToolProps } from './font-to-outline';
+export { ExtractTablesTool, type ExtractTablesToolProps } from './extract-tables';
+export { OCGManagerTool, type OCGManagerToolProps } from './ocg-manager';
+export { PDFReaderTool, type PDFReaderToolProps } from './pdf-reader';
+

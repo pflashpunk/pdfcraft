@@ -1,4 +1,9 @@
 import createNextIntlPlugin from 'next-intl/plugin';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
@@ -19,20 +24,30 @@ const nextConfig = {
         module: false,
         url: false,
         worker_threads: false,
+        canvas: false,  // Required for pdfjs-dist-legacy
       };
+    } else {
+      // Mark canvas as external for server-side builds
+      config.externals = config.externals || [];
+      config.externals.push({
+        canvas: 'commonjs canvas',
+      });
     }
 
-    // Also add module to alias for some packages that use it
+    // Also add module and canvas to alias for some packages that use it
     config.resolve.alias = {
       ...config.resolve.alias,
       'module': false,
     };
 
-    // Ignore the dynamic import of 'module' in gs-wasm
+    // Ignore problematic modules that are not needed in browser
     config.plugins.push(
       new webpack.IgnorePlugin({
-        resourceRegExp: /^module$/,
-        contextRegExp: /@bentopdf/,
+        resourceRegExp: /^module$/
+      }),
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^canvas$/,
+        contextRegExp: /pdfjs-dist-legacy/
       })
     );
 
@@ -57,6 +72,12 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Minimum cache TTL for optimized images (in seconds)
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+  },
+
+  turbopack: {
+    resolveAlias: {
+      canvas: './src/lib/mocks/canvas.js',
+    },
   },
 
   // Trailing slash for static hosting compatibility
@@ -90,6 +111,42 @@ const nextConfig = {
   // For static export, configure headers in your hosting platform
   async headers() {
     return [
+      {
+        // LibreOffice WASM .wasm.gz — serve as application/wasm with gzip Content-Encoding
+        // Same approach as BentoPDF's nginx config so browser decompresses transparently
+        source: '/libreoffice-wasm/soffice.wasm.gz',
+        headers: [
+          { key: 'Content-Type', value: 'application/wasm' },
+          { key: 'Content-Encoding', value: 'gzip' },
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+          { key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },
+        ],
+      },
+      {
+        // LibreOffice WASM .data.gz — serve as application/octet-stream with gzip Content-Encoding
+        source: '/libreoffice-wasm/soffice.data.gz',
+        headers: [
+          { key: 'Content-Type', value: 'application/octet-stream' },
+          { key: 'Content-Encoding', value: 'gzip' },
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+          { key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },
+        ],
+      },
+      {
+        // LibreOffice WASM Worker - needs COEP to spawn workers with SharedArrayBuffer access
+        source: '/libreoffice-wasm/browser.worker.global.js',
+        headers: [
+          { key: 'Content-Type', value: 'application/javascript' },
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+          { key: 'Cross-Origin-Resource-Policy', value: 'cross-origin' },
+        ],
+      },
       {
         // Static assets - long cache
         source: '/:path*.(ico|jpg|jpeg|png|gif|svg|webp|avif|woff|woff2|ttf|eot)',
@@ -139,6 +196,19 @@ const nextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
+          },
+          // Required for SharedArrayBuffer (LibreOffice WASM)
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+          },
+          {
+            key: 'Cross-Origin-Embedder-Policy',
+            value: 'require-corp',
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'cross-origin',
           },
         ],
       },

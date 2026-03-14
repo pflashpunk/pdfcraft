@@ -20,6 +20,10 @@ export {
   parsePageRanges,
   createSplitEveryNPages,
   createSplitEveryPage,
+  createSplitByEvenOdd,
+  createSplitNTimes,
+  createSplitByBookmarks,
+  type BookmarkInfo,
 } from './split';
 
 // Organize processor
@@ -543,3 +547,108 @@ export {
   type ExtractImagesOptions,
 } from './extract-images';
 
+// Deskew PDF processor
+export {
+  DeskewPDFProcessor,
+  createDeskewProcessor,
+  deskewPDF,
+  type DeskewPDFOptions,
+  type DeskewResult,
+  type PageDeskewResult,
+} from './deskew';
+
+// PDF Booklet processor
+export {
+  BookletPDFProcessor,
+  createBookletProcessor,
+  createBooklet,
+  type BookletPDFOptions,
+  type BookletGridMode,
+  type BookletPaperSize,
+  type BookletOrientation,
+  type BookletRotation,
+} from './booklet';
+
+// Rasterize PDF processor
+export {
+  RasterizePDFProcessor,
+  createRasterizeProcessor,
+  rasterizePDF,
+  DPI_PRESETS,
+  type RasterizePDFOptions,
+  type RasterizeFormat,
+} from './rasterize';
+
+// Markdown to PDF processor
+export {
+  MarkdownToPDFProcessor,
+  createMarkdownToPDFProcessor,
+  markdownToPDF,
+  type MarkdownToPDFOptions,
+  type MarkdownPageSize,
+  type MarkdownTheme,
+} from './markdown-to-pdf';
+
+// CBZ to PDF processor
+export {
+  CbzToPDFProcessor,
+  createCbzToPDFProcessor,
+  cbzToPDF,
+  type CbzToPDFOptions,
+  type CbzPageSize,
+} from './cbz-to-pdf';
+
+// PDF to PDF/A processor
+export {
+  PdfToPdfAProcessor,
+  createPdfToPdfAProcessor,
+  pdfToPdfA,
+  PDFA_LEVEL_INFO,
+  type PdfToPdfAOptions,
+  type PdfALevel,
+} from './pdf-to-pdfa';
+
+// Font to Outline processor
+export {
+  FontToOutlineProcessor,
+  createFontToOutlineProcessor,
+  fontToOutline,
+  type FontToOutlineOptions,
+} from './font-to-outline';
+
+// Extract Tables processor
+export {
+  ExtractTablesProcessor,
+  createExtractTablesProcessor,
+  extractTables,
+  type ExtractTablesOptions,
+  type TableExportFormat,
+} from './extract-tables';
+
+// Email to PDF processor
+export {
+  EmailToPDFProcessor,
+  createEmailToPDFProcessor,
+  emailToPDF,
+  type EmailToPDFOptions,
+  type EmailPageSize,
+} from './email-to-pdf';
+
+// OCG Manager processor
+export {
+  OCGManagerProcessor,
+  createOCGManagerProcessor,
+  manageOCGLayers,
+  listOCGLayers,
+  type OCGManagerOptions,
+  type OCGLayer,
+  type OCGAction,
+} from './ocg-manager';
+
+// PDF to Markdown processor
+export {
+  PDFToMarkdownProcessor,
+  createPDFToMarkdownProcessor,
+  pdfToMarkdown,
+  type PDFToMarkdownOptions,
+} from './pdf-to-markdown';
